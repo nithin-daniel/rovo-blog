@@ -1,0 +1,28 @@
+services:
+  # Frontend Static Site
+  - type: web
+    name: blog-frontend
+    env: static
+    plan: starter
+    buildCommand: ./build.sh
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://your-backend-app.onrender.com/api
+      - key: VITE_APP_NAME
+        value: Modern Blog
+      - key: VITE_APP_VERSION
+        value: 1.0.0
+    # Custom headers for SPA
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+    # Redirect rules for SPA routing
+    routes:
+      - type: redirect
+        source: /*
+        destination: /index.html

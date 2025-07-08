@@ -8,7 +8,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "build:render": "chmod +x build.sh && ./build.sh",
+    "verify:render": "chmod +x verify-render.sh && ./verify-render.sh"
   },
   "dependencies": {
     "react": "^18.2.0",

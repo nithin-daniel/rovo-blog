@@ -31,11 +31,6 @@ app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from client build (for Render deployment)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/dist'));
-}
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({
@@ -50,15 +45,8 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 
-// Serve React app for all non-API routes (for client-side routing)
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    res.sendFile('index.html', { root: 'client/dist' });
-  });
-}
-
-// 404 handler for API routes
-app.use('/api/*', notFound);
+// 404 handler
+app.use(notFound);
 
 // Error handler
 app.use(errorHandler);

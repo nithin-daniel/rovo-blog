@@ -9,7 +9,10 @@
     "start": "node dist/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "build:render": "chmod +x build.sh && ./build.sh",
+    "start:render": "node dist/index.js",
+    "verify:render": "chmod +x verify-render.sh && ./verify-render.sh"
   },
   "dependencies": {
     "express": "^4.18.2",
