@@ -1,37 +1,33 @@
 # Backend Dockerfile for Render.com
-FROM node:18-alpine AS base
+FROM node:18-alpine AS builder
 
 # Install curl for health checks
 RUN apk add --no-cache curl
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY shared/ ./shared/
-
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Development stage for building
-FROM node:18-alpine AS builder
-WORKDIR /app
-
-# Copy package files and install all dependencies (including dev)
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm ci
 
-# Copy source code and shared types
+# Copy source code
 COPY src/ ./src/
-COPY ../shared/ ./shared/
 COPY tsconfig.json ./
 
 # Build the application
 RUN npm run build
 
 # Production stage
-FROM base AS production
+FROM node:18-alpine AS production
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 WORKDIR /app
+
+# Copy package files and install production dependencies
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy built application
 COPY --from=builder /app/dist ./dist

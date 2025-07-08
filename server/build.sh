@@ -10,6 +10,12 @@ echo "🚀 Building Backend for Render.com..."
 echo "📦 Installing dependencies..."
 npm ci
 
+# Copy shared types if they exist (for monorepo structure)
+if [ -d "../shared" ]; then
+    echo "📋 Copying shared types..."
+    cp -r ../shared ./shared
+fi
+
 # Build TypeScript
 echo "🏗️ Building TypeScript..."
 npm run build

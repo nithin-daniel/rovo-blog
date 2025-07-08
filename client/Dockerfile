@@ -1,26 +1,15 @@
 # Frontend Dockerfile for Render.com
-FROM node:18-alpine AS base
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Development stage for building
 FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# Copy package files and install all dependencies (including dev)
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm ci
 
-# Copy source code and shared types
+# Copy source code and configuration files
 COPY src/ ./src/
 COPY public/ ./public/
-COPY ../shared/ ./shared/
 COPY index.html ./
 COPY vite.config.ts ./
 COPY tsconfig*.json ./
