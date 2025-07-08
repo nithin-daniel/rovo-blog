@@ -1,0 +1,52 @@
+{
+  "name": "modern-blog-app",
+  "version": "1.0.0",
+  "description": "A modern blog application with clean architecture",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm run dev",
+    "build": "npm run client:build && npm run server:build",
+    "client:build": "cd client && npm run build",
+    "server:build": "cd server && npm run build",
+    "test": "npm run server:test && npm run client:test",
+    "server:test": "cd server && npm test",
+    "client:test": "cd client && npm test",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "docker:setup": "chmod +x scripts/docker-setup.sh && ./scripts/docker-setup.sh",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev:detached": "docker-compose -f docker-compose.dev.yml up --build -d",
+    "docker:prod": "docker-compose up --build",
+    "docker:prod:detached": "docker-compose up --build -d",
+    "docker:stop": "docker-compose down && docker-compose -f docker-compose.dev.yml down",
+    "docker:clean": "chmod +x scripts/docker-cleanup.sh && ./scripts/docker-cleanup.sh",
+    "docker:logs": "docker-compose logs -f",
+    "docker:logs:dev": "docker-compose -f docker-compose.dev.yml logs -f",
+    "docker:health": "chmod +x scripts/health-check.sh && ./scripts/health-check.sh",
+    "deploy:staging": "docker-compose -f docker-compose.staging.yml up --build -d",
+    "deploy:production": "chmod +x scripts/deploy-production.sh && ./scripts/deploy-production.sh",
+    "deploy:prod:manual": "docker-compose -f docker-compose.prod.yml up --build -d",
+    "backup": "chmod +x scripts/backup.sh && ./scripts/backup.sh",
+    "restore": "chmod +x scripts/restore.sh && ./scripts/restore.sh",
+    "logs:staging": "docker-compose -f docker-compose.staging.yml logs -f",
+    "logs:production": "docker-compose -f docker-compose.prod.yml logs -f",
+    "stop:staging": "docker-compose -f docker-compose.staging.yml down",
+    "stop:production": "docker-compose -f docker-compose.prod.yml down",
+    "build:render": "chmod +x build.sh && ./build.sh",
+    "start:render": "node server/dist/index.js",
+    "verify:render": "chmod +x scripts/verify-render.sh && ./scripts/verify-render.sh"
+  },
+  "keywords": [
+    "blog",
+    "typescript",
+    "react",
+    "nodejs",
+    "clean-architecture"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

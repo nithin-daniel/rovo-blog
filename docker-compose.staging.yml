@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: blog_mongodb_staging
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: staging_password_123
+      MONGO_INITDB_DATABASE: blog_app_staging
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_staging_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - blog_network_staging
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: blog_redis_staging
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_staging_data:/data
+    networks:
+      - blog_network_staging
+
+  # Blog Application
+  blog_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: staging
+    container_name: blog_app_staging
+    restart: unless-stopped
+    ports:
+      - "5001:5000"
+    environment:
+      - NODE_ENV=staging
+      - PORT=5000
+      - MONGODB_URI=mongodb://admin:staging_password_123@mongodb:27017/blog_app_staging?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=staging_jwt_secret_key_not_for_production
+      - JWT_EXPIRES_IN=7d
+      - CLIENT_URL=http://localhost:3001
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX_REQUESTS=1000
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - blog_network_staging
+    volumes:
+      - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx for staging
+  nginx:
+    image: nginx:alpine
+    container_name: blog_nginx_staging
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    volumes:
+      - ./nginx/nginx.staging.conf:/etc/nginx/nginx.conf:ro
+      - ./client/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - blog_app
+    networks:
+      - blog_network_staging
+
+volumes:
+  mongodb_staging_data:
+  redis_staging_data:
+
+networks:
+  blog_network_staging:
+    driver: bridge

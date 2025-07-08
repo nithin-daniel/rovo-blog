@@ -1,0 +1,51 @@
+services:
+  # Web Service (Backend + Frontend)
+  - type: web
+    name: blog-app
+    env: node
+    plan: starter
+    buildCommand: npm run build
+    startCommand: node server/dist/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromService:
+          type: web
+          name: blog-app
+          property: port
+      - key: MONGODB_URI
+        fromDatabase:
+          name: blog-mongodb
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: blog-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: blog-app
+          property: host
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+    # Health check
+    healthCheckPath: /health
+
+  # Redis Cache
+  - type: redis
+    name: blog-redis
+    plan: starter
+    maxmemoryPolicy: allkeys-lru
+
+databases:
+  # MongoDB Database
+  - name: blog-mongodb
+    plan: starter
