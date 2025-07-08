@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
@@ -7,19 +7,19 @@ import { useThemeStore } from './store/themeStore';
 
 // Layout Components
 import Layout from './components/Layout/Layout';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Pages
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PostDetailPage from './pages/PostDetailPage';
-import CreatePostPage from './pages/CreatePostPage';
-import EditPostPage from './pages/EditPostPage';
-import ProfilePage from './pages/ProfilePage';
-import DashboardPage from './pages/DashboardPage';
-import SearchPage from './pages/SearchPage';
-import CategoryPage from './pages/CategoryPage';
+// import CreatePostPage from './pages/CreatePostPage';
+// import EditPostPage from './pages/EditPostPage';
+// import ProfilePage from './pages/ProfilePage';
+// import DashboardPage from './pages/DashboardPage';
+// import SearchPage from './pages/SearchPage';
+// import CategoryPage from './pages/CategoryPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Styles
@@ -62,16 +62,17 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/post/:slug" element={<PostDetailPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/category/:slug" element={<CategoryPage />} />
-              <Route path="/profile/:username" element={<ProfilePage />} />
+              {/* TODO: Implement these pages */}
+              <Route path="/search" element={<div className="p-8 text-center">Search Page - Coming Soon</div>} />
+              <Route path="/category/:slug" element={<div className="p-8 text-center">Category Page - Coming Soon</div>} />
+              <Route path="/profile/:username" element={<div className="p-8 text-center">Profile Page - Coming Soon</div>} />
 
               {/* Protected Routes */}
               <Route
                 path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <DashboardPage />
+                    <div className="p-8 text-center">Dashboard - Coming Soon</div>
                   </ProtectedRoute>
                 }
               />
@@ -79,7 +80,7 @@ function App() {
                 path="/create-post"
                 element={
                   <ProtectedRoute>
-                    <CreatePostPage />
+                    <div className="p-8 text-center">Create Post - Coming Soon</div>
                   </ProtectedRoute>
                 }
               />
@@ -87,7 +88,7 @@ function App() {
                 path="/edit-post/:id"
                 element={
                   <ProtectedRoute>
-                    <EditPostPage />
+                    <div className="p-8 text-center">Edit Post - Coming Soon</div>
                   </ProtectedRoute>
                 }
               />

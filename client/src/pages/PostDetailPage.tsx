@@ -21,7 +21,7 @@ const PostDetailPage: React.FC = () => {
     () => postService.getPostBySlug(slug!),
     {
       enabled: !!slug,
-      onSuccess: (data) => {
+      onSuccess: () => {
         // Check if user has liked this post
         // This would typically come from the API
         setIsLiked(false);
@@ -30,7 +30,7 @@ const PostDetailPage: React.FC = () => {
   );
 
   const deleteMutation = useMutation(
-    () => postService.deletePost(post!.data._id),
+    () => postService.deletePost(post!._id),
     {
       onSuccess: () => {
         toast.success('Post deleted successfully');
@@ -44,7 +44,7 @@ const PostDetailPage: React.FC = () => {
   );
 
   const likeMutation = useMutation(
-    () => postService.likePost(post!.data._id),
+    () => postService.likePost(post!._id),
     {
       onSuccess: () => {
         setIsLiked(!isLiked);
@@ -66,8 +66,8 @@ const PostDetailPage: React.FC = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: post!.data.title,
-          text: post!.data.excerpt,
+          title: post!.title,
+          text: post!.excerpt,
           url: window.location.href,
         });
       } catch (error) {
@@ -88,7 +88,7 @@ const PostDetailPage: React.FC = () => {
     );
   }
 
-  if (error || !post?.data) {
+  if (error || !post) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -106,19 +106,19 @@ const PostDetailPage: React.FC = () => {
     );
   }
 
-  const postData = post.data;
-  const isAuthor = user?._id === postData.author._id;
+  // const postData = post;
+  const isAuthor = user?._id === post.author._id;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-8">
-          {postData.featuredImage && (
+          {post.featuredImage && (
             <div className="aspect-video w-full">
               <img
-                src={postData.featuredImage}
-                alt={postData.title}
+                src={post.featuredImage}
+                alt={post.title}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -127,7 +127,7 @@ const PostDetailPage: React.FC = () => {
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                {postData.categories.map((category) => (
+                {post.categories.map((category: any) => (
                   <Link
                     key={category._id}
                     to={`/category/${category.slug}`}
@@ -140,7 +140,7 @@ const PostDetailPage: React.FC = () => {
               
               {isAuthor && (
                 <div className="flex items-center space-x-2">
-                  <Link to={`/edit-post/${postData._id}`}>
+                  <Link to={`/edit-post/${post._id}`}>
                     <Button variant="ghost" size="sm" leftIcon={<Edit className="w-4 h-4" />}>
                       Edit
                     </Button>
@@ -160,24 +160,24 @@ const PostDetailPage: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {postData.title}
+              {post.title}
             </h1>
 
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              {postData.excerpt}
+              {post.excerpt}
             </p>
 
             {/* Author and Meta Info */}
             <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
               <div className="flex items-center space-x-4">
                 <Link
-                  to={`/profile/${postData.author.username}`}
+                  to={`/profile/${post.author.username}`}
                   className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
                 >
-                  {postData.author.avatar ? (
+                  {post.author.avatar ? (
                     <img
-                      src={postData.author.avatar}
-                      alt={postData.author.username}
+                      src={post.author.avatar}
+                      alt={post.author.username}
                       className="w-10 h-10 rounded-full object-cover"
                     />
                   ) : (
@@ -187,10 +187,10 @@ const PostDetailPage: React.FC = () => {
                   )}
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">
-                      {postData.author.firstName} {postData.author.lastName}
+                      {post.author.firstName} {post.author.lastName}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      @{postData.author.username}
+                      @{post.author.username}
                     </p>
                   </div>
                 </Link>
@@ -199,11 +199,11 @@ const PostDetailPage: React.FC = () => {
               <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
                 <div className="flex items-center space-x-1">
                   <Calendar className="w-4 h-4" />
-                  <span>{formatDistanceToNow(new Date(postData.createdAt))} ago</span>
+                  <span>{formatDistanceToNow(new Date(post.createdAt))} ago</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="w-4 h-4" />
-                  <span>{postData.readTime} min read</span>
+                  <span>{post.readTime} min read</span>
                 </div>
               </div>
             </div>
@@ -214,19 +214,19 @@ const PostDetailPage: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
           <div 
             className="prose prose-lg dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: postData.content }}
+            dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>
 
         {/* Tags */}
-        {postData.tags.length > 0 && (
+        {post.tags.length > 0 && (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <Tag className="w-5 h-5 mr-2" />
               Tags
             </h3>
             <div className="flex flex-wrap gap-2">
-              {postData.tags.map((tag) => (
+              {post.tags.map((tag: any) => (
                 <Link
                   key={tag._id}
                   to={`/search?tag=${tag.slug}`}
@@ -251,7 +251,7 @@ const PostDetailPage: React.FC = () => {
                 isLoading={likeMutation.isLoading}
                 className={isLiked ? 'text-red-500 hover:text-red-600' : ''}
               >
-                {postData.likeCount} {postData.likeCount === 1 ? 'Like' : 'Likes'}
+                {post.likeCount} {post.likeCount === 1 ? 'Like' : 'Likes'}
               </Button>
               
               <Button
@@ -259,7 +259,7 @@ const PostDetailPage: React.FC = () => {
                 size="sm"
                 leftIcon={<MessageCircle className="w-5 h-5" />}
               >
-                {postData.commentCount} {postData.commentCount === 1 ? 'Comment' : 'Comments'}
+                {post.commentCount} {post.commentCount === 1 ? 'Comment' : 'Comments'}
               </Button>
             </div>
 
