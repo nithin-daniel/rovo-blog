@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { Comment as IComment } from '../../shared/types';
 
-export interface CommentDocument extends Omit<IComment, '_id' | 'author' | 'post' | 'replies'>, Document {
+export interface CommentDocument extends Omit<IComment, '_id' | 'author' | 'post' | 'replies' | 'parent'>, Document {
   author: mongoose.Types.ObjectId;
   post: mongoose.Types.ObjectId;
   parent?: mongoose.Types.ObjectId;

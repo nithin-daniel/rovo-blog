@@ -22,7 +22,7 @@ export class PostRepository {
     await this.updateCategoryPostCounts(categoryIds);
     await this.updateTagPostCounts(tagIds);
 
-    return await this.findById(savedPost._id.toString());
+    return await this.findById(savedPost._id.toString()) as PostDocument;
   }
 
   async findById(id: string): Promise<PostDocument | null> {
@@ -33,7 +33,7 @@ export class PostRepository {
   }
 
   async findBySlug(slug: string): Promise<PostDocument | null> {
-    return await Post.findOne({ slug })
+    return await Post.findOne({ slug }).populate('author categories tags')
       .populate('author', 'username firstName lastName avatar')
       .populate('categories', 'name slug color')
       .populate('tags', 'name slug');

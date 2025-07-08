@@ -10,6 +10,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "build:render": "chmod +x build.sh && ./build.sh",
+    "build:vercel": "chmod +x build-vercel.sh && ./build-vercel.sh",
     "verify:render": "chmod +x verify-render.sh && ./verify-render.sh"
   },
   "dependencies": {
