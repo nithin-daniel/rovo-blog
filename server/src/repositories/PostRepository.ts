@@ -1,5 +1,5 @@
 import { Post, PostDocument } from '../models/Post';
-import { CreatePostDto, UpdatePostDto, SearchFilters } from '../../../shared/types';
+import { CreatePostDto, UpdatePostDto, SearchFilters } from '../../shared/types';
 import { Category } from '../models/Category';
 import { Tag } from '../models/Tag';
 

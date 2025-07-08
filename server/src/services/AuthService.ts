@@ -1,5 +1,5 @@
 import { UserRepository } from '../repositories/UserRepository';
-import { CreateUserDto, LoginDto } from '../../../shared/types';
+import { CreateUserDto, LoginDto } from '../../shared/types';
 import { generateToken } from '../utils/jwt';
 import { AppError } from '../utils/AppError';
 import { EmailService } from './EmailService';

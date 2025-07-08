@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { Tag as ITag } from '../../../shared/types';
+import { Tag as ITag } from '../../shared/types';
 
 export interface TagDocument extends Omit<ITag, '_id'>, Document {
   generateSlug(): void;

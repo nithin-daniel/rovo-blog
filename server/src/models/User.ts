@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
-import { User as IUser } from '../../../shared/types';
+import { User as IUser } from '../../shared/types';
 
 export interface UserDocument extends Omit<IUser, '_id'>, Document {
   password: string;

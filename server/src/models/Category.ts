@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { Category as ICategory } from '../../../shared/types';
+import { Category as ICategory } from '../../shared/types';
 
 export interface CategoryDocument extends Omit<ICategory, '_id'>, Document {
   generateSlug(): void;

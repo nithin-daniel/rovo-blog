@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { Post as IPost } from '../../../shared/types';
+import { Post as IPost } from '../../shared/types';
 
 export interface PostDocument extends Omit<IPost, '_id' | 'author' | 'categories' | 'tags'>, Document {
   author: mongoose.Types.ObjectId;

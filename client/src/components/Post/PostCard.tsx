@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, Eye, Heart, MessageCircle, User } from 'lucide-react';
-import { Post } from '../../../../shared/types';
+import { Post } from '../../../shared/types';
 import { formatDistanceToNow } from 'date-fns';
 
 interface PostCardProps {

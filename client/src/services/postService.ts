@@ -1,5 +1,5 @@
 import { apiService } from './api';
-import { Post, CreatePostDto, UpdatePostDto, SearchFilters, PaginatedResponse } from '../../../shared/types';
+import { Post, CreatePostDto, UpdatePostDto, SearchFilters, PaginatedResponse } from '../../shared/types';
 
 class PostService {
   async createPost(postData: CreatePostDto): Promise<Post> {

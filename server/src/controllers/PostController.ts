@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { PostRepository } from '../repositories/PostRepository';
 import { AppError } from '../utils/AppError';
 import { AuthRequest } from '../middleware/auth';
-import { SearchFilters } from '../../../shared/types';
+import { SearchFilters } from '../../shared/types';
 
 export class PostController {
   private postRepository: PostRepository;

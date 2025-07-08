@@ -1,5 +1,5 @@
 import { User, UserDocument, UserDocumentWithoutPassword, UserDocumentWithPassword } from '../models/User';
-import { CreateUserDto } from '../../../shared/types';
+import { CreateUserDto } from '../../shared/types';
 
 export class UserRepository {
   async create(userData: CreateUserDto): Promise<UserDocument> {

@@ -1,5 +1,5 @@
 import { apiService } from './api';
-import { CreateUserDto, LoginDto, User } from '../../../shared/types';
+import { CreateUserDto, LoginDto, User } from '../../shared/types';
 
 export interface AuthResponse {
   user: User;
