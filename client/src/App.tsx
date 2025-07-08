@@ -22,8 +22,6 @@ import PostDetailPage from './pages/PostDetailPage';
 // import CategoryPage from './pages/CategoryPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-// Styles
-import './index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
